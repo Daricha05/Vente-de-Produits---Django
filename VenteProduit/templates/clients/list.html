@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block title %}Liste client{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1>LISTE DES CLIENTS</h1>
+    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"
+        data-bs-whatever="@getbootstrap">Créer un client</a>
+</div>
+<hr class="mb-5">
+
+<table id='tab' class='table table-striped pt-4'>
+    <thead class="table-dark">
+        <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Téléphone</th>
+            <th>Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.nom }}</td>
+            <td>{{ client.prenom }}</td>
+            <td>{{ client.phone }}</td>
+            <td>{{ client.date_creation }}</td>
+            <td class="text-center">
+                <a href="{% url 'homeClient' client.pk %}" class="btn btn-warning btn-sm">Info</a>
+                <a href="{% url 'upClient' client.pk %}" class="btn btn-primary btn-sm">Modifier</a>
+                <a href="{% url 'delClient' client.pk %}" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#delModal">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+<!-- Modal Add client -->
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Ajouter de produit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'newClient' %}" method="POST">
+                <div class="modal-body">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom de client">
+                    </div>
+                    <div class="mb-3">
+                        <label for="prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="prenom" name="prenom"
+                            placeholder="Prenom de client">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Téléphone</label>
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Numéro téléphone">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary w-100" value="Ajouter">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Suppression -->
+
+{% for client in clients %}
+<div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h4 class="modal-title text-light mx-auto fw-bold" id="delModalLabel">Message de confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <h4>Vous étes sûr de vouloir supprimer cette client ?</h4>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Non</button>
+                <a href="{% url 'delClient' client.pk %}" class="btn btn-danger w-25">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}

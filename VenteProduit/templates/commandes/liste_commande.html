@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-5">
+        <h4>Clients</h4>
+        <hr>
+        <div class="card card-body">
+            <table class="table table-sm table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Prenom</th>
+                        <th>Téléphone</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                    <tr>
+                        <th scope="row">{{ client.pk }}</th>
+                        <td>{{ client.nom }}</td>
+                        <td>{{ client.prenom }}</td>
+                        <td>{{ client.phone }}</td>
+                        <td><a href="{% url 'homeClient' client.pk %}" class="btn btn-outline-warning btn-sm">Detail</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4>Les 10 Dérnières Commandes</h4>
+            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                aria-controls="offcanvasRight">Ajouter une Commande</a>
+        </div>
+        <hr>
+        <div class="card card-body">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Client</th>
+                        <th>Date Commande</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for commande in commandes %}
+                    <tr>
+                        <th>{{ commande.produit }}</th>
+                        <th>{{ commande.client }}</th>
+                        <td>{{ commande.date_creation }}</td>
+                        <td>{{ commande.statu }}</td>
+                        <td>
+                            <a href="{% url 'updateCom' commande.pk %}" class="btn btn-primary btn-sm">Modifier</a>
+                            <a href="" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#delModal">Supprimer</a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{# offcanvas #}
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h3 id="offcanvasRightLabel" class="text-center">Ajouter une nouvelle commande</h3>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <form action="" method="post">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <div class="mb-3">
+                <input type="submit" class="btn btn-primary w-100" value="Ajouter">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Modal Suppression -->
+
+{% for commande in commandes %}
+<div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h4 class="modal-title text-light mx-auto fw-bold" id="delModalLabel">Message de confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <h4>Vous étes sûr de vouloir supprimer cette commande ?</h4>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Non</button>
+                <a href="{% url 'deleteCom' commande.pk %}" class="btn btn-danger w-25">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+
+{% endblock %}

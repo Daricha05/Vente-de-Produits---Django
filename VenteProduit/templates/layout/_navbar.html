@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">VP</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'homeProduct' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'listClient' %}">Clients</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'homeCommand' %}">Commandes</a>
+        </li>
+      </ul>
+    </div>
+    {% if user.is_authenticated %}
+    <form class="d-flex align-items-center text-light">
+      <h5 class="mb-0 me-5">Bonjour {{ user.username }}</h5>
+      <a href="{% url 'logout' %}" class="text-decoration-none text-light mx-4 fw-bold">Logout</a>
+    </form>
+    {% endif %}
+  </div>
+</nav>

@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="row mb-5">
+
+    <div class="col-md-8">
+        <div class="card card-body">
+            <h4>Informations</h4>
+            <hr>
+            <p><span class="fw-bold">Nom complet :</span> {{ client.nom }} {{ client.prenom }}</p>
+            <p><span class="fw-bold">Téléphone : </span>{{ client.phone }}</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-body">
+            <h4>Total des Commandes</h4>
+            <hr>
+            <h1 class="text-center">{{ commande_total }}</h1>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col">
+        <div class="card card-body">
+            <form class="d-flex align-items-center justify-content-between">
+                {{ myFilter.form }}
+                <button type="submit" class="btn btn-primary w-25 btn-lg">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Date de Commande</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for commande in commande %}
+                    <tr>
+                        <th scope="row">{{ commande.produit }}</th>
+                        <td>{{ commande.date_creation }}</td>
+                        <td>{{ commande.statu }}</td>
+                        <td>{{ commande.date_creation }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

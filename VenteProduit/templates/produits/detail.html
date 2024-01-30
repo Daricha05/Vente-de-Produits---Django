@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block title %}Liste de produit{% endblock %}
+
+{% block content %}
+
+<h1>DETAIL DES PRODUITS</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-3" style="max-width: 840px;">
+            <div class="row g-0">
+                <div class="col-md-6">
+                    {% if produit.images == "" %}
+                    <div class="ratio ratio-4x3 bg-light">
+                        <h1 class="text-center text-secondary mt-5 pt-5 display-2">PAS IMAGE</h1>
+                    </div>
+                    {% else %}
+                    <div class="image ratio ratio-4x3">
+                        <img src="{{ produit.images.url }}" class="img-fluid img-thumbnail rounded" alt="...">
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h4 class="card-title fw-bold text-primary">{{ produit.nom }}</h4>
+                        <p class="card-text">{{ produit.description }}</p>
+                        <p class="fw-bold">Prix : {{ produit.prix }} Ar</p>
+
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Ajouter il y a {{ produit.date_creation|timesince }}</small>
+                    <a href="{% url 'homeCommand' %}" class="btn btn-outline-primary w-50">Commander</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <h3 class="my-4">Autre produits</h3>
+        {% for autreProd in produit_lier %}
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-5">
+                    {% if autreProd.images == "" %}
+                    <div class="ratio ratio-1x1 bg-secondary">
+                        <h4 class="text-center text-light mt-5">PAS IMAGE</h4>
+                    </div>
+                    {% else %}
+                    <div class="image ratio ratio-1x1">
+                        <img src="{{ autreProd.images.url }}" class="rounded" alt="produit">
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body">
+                        <a href="{% url 'detailProduct' autreProd.pk %}" class="text-decoration-none">
+                            <h5 class="card-title text-primary fw-bold">{{ autreProd.nom }}</h5>
+                        </a>
+                        <p class="card-text">{{ autreProd.description|truncatewords:6 }}</p>
+                        <p class="card-text text-danger">Prix : {{ autreProd.prix }} Ar</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock %}

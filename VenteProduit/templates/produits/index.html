@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}Liste de produit{% endblock %}
+
+{% block content %}
+
+<!-- <h1>LISTE DES PRODUITS</h1> -->
+
+<div class="row">
+    {% for produit in produits %}
+
+    <div class="card col-md-4 mx-2 p-0" style="width: 19.5rem;">
+        {% if produit.images == "" %}
+        <div class="ratio ratio-4x3 bg-light">
+            <h1 class="text-center text-secondary mt-5 pt-5">PAS IMAGE</h1>
+        </div>
+        {% else %}
+        <div class="image ratio ratio-4x3">
+            <img src="{{ produit.images.url }}" class="rounded" alt="...">
+        </div>
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title fw-bold">{{ produit.nom }}</h5>
+            <p class="card-text">{{ produit.description | truncatewords:8 }}</p>
+            <p class="card-text fw-bold text-danger">Prix : {{ produit.prix }} Ar</p>
+        </div>
+        <div class="card-footer p-2">
+            <a href="{% url 'detailProduct' produit.pk %}" class="btn btn-outline-primary w-100">Detail</a>
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+
+
+{% endblock %}

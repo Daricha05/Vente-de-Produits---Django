@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="card w-50 mx-auto p-3 mt-5 shadow">
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="mb-3">
+            <input type="submit" class="btn btn-primary w-25" value="Modifier">
+            <a href="{% url 'homeCommand' %}" class="btn btn-danger w-25">Retour</a>
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}
