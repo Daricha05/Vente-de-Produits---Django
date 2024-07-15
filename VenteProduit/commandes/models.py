@@ -1,13 +1,28 @@
+from django.contrib.auth.models import User
 from django.db import models
-from clients.models import Client
 from produits.models import Produit
 
 
 class Commande(models.Model):
-    STATUS = (('en attente', 'en attente'),
-              ('refusée', 'refusée'),
-              ('livré', 'livré'),)
-    client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True)
-    produit = models.ForeignKey(Produit, on_delete=models.SET_NULL, null=True)
-    statu = models.CharField(max_length=100, null=False, choices=STATUS)
+    STATUS = (('en attente', 'En attente'),
+              ('traitement', 'En cours de traitement'),
+              ('livré', 'Livré'),
+              ('annulée', 'Annulée'), )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    produit = models.ForeignKey(
+        Produit, on_delete=models.SET_NULL, null=True)
+    status = models.CharField(
+        max_length=100, choices=STATUS, default="en attente")
     date_creation = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Commande {self.id} pour {self.user.username}"
+
+
+class CommandeProduit(models.Model):
+    commande = models.ForeignKey(Commande, on_delete=models.CASCADE)
+    produit = models.ForeignKey(Produit, on_delete=models.CASCADE)
+    quantite = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.produit.nom} x {self.quantite} (Commande {self.commande.id})"

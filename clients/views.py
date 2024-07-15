@@ -66,3 +66,6 @@ def delClient(request, pk):
     client = Client.objects.get(pk=pk)
     client.delete()
     return redirect('listClient')
+
+
+

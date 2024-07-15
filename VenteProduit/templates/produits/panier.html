@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}Panier{% endblock %}
+
+{% block content %}
+
+<h1>VOTRE PANIER</h1>
+
+{% if messages %}
+<div>
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">PRODUIT</th>
+            <th scope="col">QUANTITE</th>
+            <th scope="col">ACTIONS</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart_items %}
+        <tr>
+            <th scope="row">{{ item.produit.nom }}</th>
+            <td>
+                <form action="{% url 'produits:update_cart_item' item.id %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <input type="number" name="quantite" value="{{ item.quantite }}" min="1"
+                        max="{{ item.produit.stock }}" class="form-control d-inline-block" style="width: 60px;">
+                    <button type="submit" class="btn btn-sm btn-primary">Modifier</button>
+                </form>
+            </td>
+            <td>
+                <form action="{% url 'produits:remove_from_cart' item.id %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if cart_items %}
+<div class="text-end">
+    <a href="{% url 'checkout' %}" class="btn btn-success">Valider l'achat</a>
+</div>
+{% endif %}
+
+{% endblock %}

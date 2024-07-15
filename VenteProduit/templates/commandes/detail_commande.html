@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>Detail Commande</h1>
+<p>Order ID: {{ order.id }}</p>
+<p>Status: {{ order.status }}</p>
+
+<ul>
+    {% for item in order.items.all %}
+    <li>{{ item.produit.nom }} - {{ item.quantite }}</li>
+    {% endfor %}
+</ul>
+
+
+{% endblock %}

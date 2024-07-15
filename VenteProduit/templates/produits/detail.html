@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Liste de produit{% endblock %}
+{% block title %}{{ produit.nom }}{% endblock %}
 
 {% block content %}
 
@@ -31,7 +31,10 @@
                 </div>
                 <div class="card-footer d-flex justify-content-between align-items-center">
                     <small class="text-muted">Ajouter il y a {{ produit.date_creation|timesince }}</small>
-                    <a href="{% url 'homeCommand' %}" class="btn btn-outline-primary w-50">Commander</a>
+                    <form action="{% url 'produits:add_to_cart' produit.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-warning">Panier</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -55,7 +58,7 @@
                 </div>
                 <div class="col-md-7">
                     <div class="card-body">
-                        <a href="{% url 'detailProduct' autreProd.pk %}" class="text-decoration-none">
+                        <a href="{% url 'produits:detail' autreProd.pk %}" class="text-decoration-none">
                             <h5 class="card-title text-primary fw-bold">{{ autreProd.nom }}</h5>
                         </a>
                         <p class="card-text">{{ autreProd.description|truncatewords:6 }}</p>

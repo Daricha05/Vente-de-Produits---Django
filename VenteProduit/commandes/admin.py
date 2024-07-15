@@ -4,4 +4,4 @@ from .models import Commande
 
 @admin.register(Commande)
 class CommandeAdmin(admin.ModelAdmin):
-    list_display = ('client', 'produit', 'statu', 'date_creation')
+    list_display = ('produit', 'status', 'date_creation')
