@@ -4,16 +4,18 @@ from produits.models import Produit
 
 
 class Commande(models.Model):
-    STATUS = (('en attente', 'En attente'),
-              ('traitement', 'En cours de traitement'),
-              ('livré', 'Livré'),
-              ('annulée', 'Annulée'), )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
-    produit = models.ForeignKey(
-        Produit, on_delete=models.SET_NULL, null=True)
+    STATUS_CHOICES = (
+        ('en attente', 'En attente'),
+        ('traitement', 'En cours de traitement'),
+        ('livré', 'Livré'),
+        ('annulée', 'Annulée'),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(
-        max_length=100, choices=STATUS, default="en attente")
+        max_length=100, choices=STATUS_CHOICES, default="en attente")
     date_creation = models.DateTimeField(auto_now_add=True)
+    # produits = models.ManyToManyField(Produit, through='CommandeProduit')
 
     def __str__(self):
         return f"Commande {self.id} pour {self.user.username}"

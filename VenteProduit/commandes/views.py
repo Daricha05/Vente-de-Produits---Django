@@ -30,7 +30,6 @@ def detail_commande(request, id):
 def create_commande(request):
     if request.method == 'POST':
         form = CommandeForm(request.POST)
-
         if form.is_valid():
             form.save()
             return redirect('commande')
@@ -42,6 +41,7 @@ def create_commande(request):
 
 @login_required(login_url='login')
 def updateCommande(request, id):
+    print("========== update")
     commande = get_object_or_404(Commande, id=id)  # Recupération ID commande
     if request.method == 'POST':
         form = CommandeForm(request.POST, instance=commande)
@@ -63,6 +63,7 @@ def deleteCommande(request, pk):
 
 @login_required(login_url='login')
 def checkout(request):
+    print("========== checkout")
     cart_items = Panier.objects.filter(user=request.user)
     if not cart_items:
         messages.error(request, "Votre panier est vide.")
@@ -76,6 +77,7 @@ def checkout(request):
             produit=item.produit,
             quantite=item.quantite
         )
+        print(f"====={commande}, {item.produit}, {item.quantite}=====")
         # Optionnel : Réduire le stock du produit
         item.produit.stock -= item.quantite
         item.produit.save()

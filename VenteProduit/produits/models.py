@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Category(models.Model):
-    nom = models.CharField(max_length=200, null=True)
+    nom = models.CharField(max_length=200, null=True, unique=True)
 
     def __str__(self) -> str:
         return self.nom
@@ -29,6 +29,9 @@ class Panier(models.Model):
     produit = models.ForeignKey(Produit, on_delete=models.CASCADE)
     quantite = models.PositiveIntegerField(default=1)
     date_ajout = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'produit')
 
     def __str__(self) -> str:
         return f"{self.user} - {self.produit.nom} - {self.quantite}"
